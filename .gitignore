@@ -114,4 +114,4 @@ dmypy.json
 .pyre/
 
 # custom excludes
-imgs\
+/imgs
