@@ -115,3 +115,5 @@ dmypy.json
 
 # custom excludes
 /imgs
+*.png
+/.idea
