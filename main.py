@@ -2,20 +2,25 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import umap
+
 from sklearn.datasets import fetch_openml
 import matplotlib.pyplot as plt
 import seaborn as sns
-import utils
+import umap
 import pandas as pd
 import numpy as np
 
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/20210517T1447z_LD32_dataFrame.csv'
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/20210521T1453dataFrame.csv'
-FILE_PATH= 'C:/Users/daleas/PycharmProjects/UMAP/20210529T1502dataFrame.csv'
+FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210521T1453dataFrame.csv' #100% BG, small set
+#FILE_PATH= 'C:/Users/daleas/Documents/umap/data/20210529T1502dataFrame.csv' #100% BG, KL=0; ; small set
+#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210603T1158dataFrame.csv' #0% BG; KL=0
+#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210604T1041dataFrame.csv' # 20% BG, KL = 0; lg set
+#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210608T1001dataFrame.csv' # 100% BG, KL=0; lg set
 
+NUM_NEIGHBORS = 3
+MIN_DISTANCE = 0.1
 
-def draw_umap(data, n_neighbors=15, min_dist=0.1, n_components=2, metric='euclidean', title=''):
+def draw_umap(data, n_neighbors=15, min_dist=1, n_components=2, metric='euclidean', title=''):
     fit = umap.UMAP(
         n_neighbors=n_neighbors,
         min_dist=min_dist,
@@ -59,7 +64,7 @@ def main():
     dataTypesLabels = ["RW", "VW"]
 
     print('Running UMAP...')
-    embedding = draw_umap(latentData_z, n_neighbors=3, min_dist=0.5, n_components=2, metric='euclidean', title='')
+    embedding = draw_umap(latentData_z, n_neighbors=NUM_NEIGHBORS, min_dist=MIN_DISTANCE, n_components=2, metric='euclidean', title='')
     np.savetxt('UMAPembedding.csv', embedding, delimiter=',')
     c1 = ['r', 'g', 'b', 'm', 'k']
 
@@ -124,10 +129,10 @@ def main():
     plt.show()
 
     fig1, ax1 = plt.subplots(figsize=(12, 10))
-    ax1.scatter(np.array(labeledDataByType['RW']['x']), np.array(labeledDataByType['RW']['y']), c=c1[0],
-               cmap="Dark2", s=16, label='RW')
     ax1.scatter(np.array(labeledDataByType['VW']['x']), np.array(labeledDataByType['VW']['y']), c=c1[2],
                cmap="Dark2", s=16, label='VW')
+    ax1.scatter(np.array(labeledDataByType['RW']['x']), np.array(labeledDataByType['RW']['y']), c=c1[0],
+               cmap="Dark2", s=16, label='RW')
     plt.setp(ax1, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
     ax1.legend(loc='lower left', fontsize=18)
@@ -220,12 +225,13 @@ def main():
     ax7.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']), np.array(labeledDataByClass['VW']['Eagle']['y']),
                c=c1[4],
                cmap="Dark2", s=16)
-    ax7.scatter(np.array(labeledDataByClass['RW']['Plane']['x']), np.array(labeledDataByClass['RW']['Plane']['y']),
-                c=c1[0],
-                cmap="Dark2", s=16, label='RW Plane')
+
     ax7.scatter(np.array(labeledDataByClass['VW']['Plane']['x']), np.array(labeledDataByClass['VW']['Plane']['y']),
                 c=c1[2],
                 cmap="Dark2", s=16, label='VW Plane')
+    ax7.scatter(np.array(labeledDataByClass['RW']['Plane']['x']), np.array(labeledDataByClass['RW']['Plane']['y']),
+                c=c1[0],
+                cmap="Dark2", s=16, label='RW Plane')
     plt.setp(ax7, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
     ax7.legend(loc='lower left', fontsize=18)
@@ -262,12 +268,13 @@ def main():
     ax8.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']), np.array(labeledDataByClass['VW']['Eagle']['y']),
                c=c1[4],
                cmap="Dark2", s=16)
-    ax8.scatter(np.array(labeledDataByClass['RW']['Glider']['x']), np.array(labeledDataByClass['RW']['Glider']['y']),
-               c=c1[0],
-               cmap="Dark2", s=16, label='RW Glider')
+
     ax8.scatter(np.array(labeledDataByClass['VW']['Glider']['x']), np.array(labeledDataByClass['VW']['Glider']['y']),
                c=c1[2],
                cmap="Dark2", s=16, label='VW Glider')
+    ax8.scatter(np.array(labeledDataByClass['RW']['Glider']['x']), np.array(labeledDataByClass['RW']['Glider']['y']),
+               c=c1[0],
+               cmap="Dark2", s=16, label='RW Glider')
 
     plt.setp(ax8, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
@@ -303,12 +310,13 @@ def main():
                c=c1[4],
                cmap="Dark2", s=16)
 
-    ax9.scatter(np.array(labeledDataByClass['RW']['Kite']['x']), np.array(labeledDataByClass['RW']['Kite']['y']),
-               c=c1[0],
-               cmap="Dark2", s=16, label='RW Kite')
+
     ax9.scatter(np.array(labeledDataByClass['VW']['Kite']['x']), np.array(labeledDataByClass['VW']['Kite']['y']),
                c=c1[2],
                cmap="Dark2", s=16, label='VW Kite')
+    ax9.scatter(np.array(labeledDataByClass['RW']['Kite']['x']), np.array(labeledDataByClass['RW']['Kite']['y']),
+               c=c1[0],
+               cmap="Dark2", s=16, label='RW Kite')
     plt.setp(ax9, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
     ax9.legend(loc='lower left', fontsize=18)
@@ -342,14 +350,15 @@ def main():
     ax10.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']), np.array(labeledDataByClass['VW']['Eagle']['y']),
                c=c1[4],
                cmap="Dark2", s=16)
-    ax10.scatter(np.array(labeledDataByClass['RW']['Quadcopter']['x']),
-               np.array(labeledDataByClass['RW']['Quadcopter']['y']),
-                c=c1[0],
-               cmap="Dark2", s=16, label='RW Quadcopter')
+
     ax10.scatter(np.array(labeledDataByClass['VW']['Quadcopter']['x']),
                np.array(labeledDataByClass['VW']['Quadcopter']['y']),
                 c=c1[2],
                cmap="Dark2", s=16, label='VW Quadcopter')
+    ax10.scatter(np.array(labeledDataByClass['RW']['Quadcopter']['x']),
+               np.array(labeledDataByClass['RW']['Quadcopter']['y']),
+                c=c1[0],
+               cmap="Dark2", s=16, label='RW Quadcopter')
     plt.setp(ax10, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
     ax10.legend(loc='lower left', fontsize=18)
@@ -385,12 +394,13 @@ def main():
                np.array(labeledDataByClass['VW']['Quadcopter']['y']),
                 c=c1[4],
                cmap="Dark2", s=16)
-    ax11.scatter(np.array(labeledDataByClass['RW']['Eagle']['x']), np.array(labeledDataByClass['RW']['Eagle']['y']),
-               c=c1[0],
-               cmap="Dark2", s=16, label='RW Eagle')
+
     ax11.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']), np.array(labeledDataByClass['VW']['Eagle']['y']),
                c=c1[2],
                cmap="Dark2", s=16, label='VW Eagle')
+    ax11.scatter(np.array(labeledDataByClass['RW']['Eagle']['x']), np.array(labeledDataByClass['RW']['Eagle']['y']),
+               c=c1[0],
+               cmap="Dark2", s=16, label='RW Eagle')
     plt.setp(ax11, xticks=[], yticks=[])
     plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
     ax11.legend(loc='lower left', fontsize=18)
