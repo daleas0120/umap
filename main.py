@@ -22,8 +22,8 @@ import numpy as np
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1259dataFrame_apt4.csv' #customBCE; alpha=0.4
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1800dataFrame_apt6.csv' #customBCE; alpha=0.6
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210703T1936dataFrame_apt8.csv' #customBCE; alpha=0.8
-FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
-
+#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
+FILE_PATH = 'D:/Ashley_ML/VAE/VAE/VAE_logs/20210730T0039/results_20210730T0150/20210730T0150dataFrame.csv' #first IR
 NUM_NEIGHBORS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 #NUM_NEIGHBORS = [40]
 
@@ -72,23 +72,36 @@ def main():
     'z24', 'z25', 'z26', 'z27', 'z28', 'z29', 'z30', 'z31']].values
 
     # Sort the Data Into Classes
-    classLabels = ["Plane", "Glider", "Kite", "Quadcopter", "Eagle"]
+    #classLabels = ["Plane", "Glider", "Kite", "Quadcopter", "Eagle"]
+    classLabels=['F16', 'A10', 'B52', 'C5']
     dataTypesLabels = ["RW", "VW"]
-    labeledDataByClass = { "RW": {"Plane": {'x': [], 'y': [], 'z': []},
-                                  "Glider": {'x': [], 'y': [], 'z': []},
-                                  "Kite": {'x': [], 'y': [], 'z': []},
-                                  "Quadcopter": {'x': [], 'y': [], 'z': []},
-                                  "Eagle": {'x': [], 'y': [], 'z': []}},
-                           "VW": {"Plane": {'x': [], 'y': [], 'z': []},
-                                 "Glider":{'x': [], 'y': [], 'z': []},
-                                 "Kite": {'x': [], 'y': [], 'z': []},
-                                 "Quadcopter": {'x': [], 'y': [], 'z': []},
-                                 "Eagle": {'x': [], 'y': [], 'z': []}}
+    # labeledDataByClass = { "RW": {"Plane": {'x': [], 'y': [], 'z': []},
+    #                               "Glider": {'x': [], 'y': [], 'z': []},
+    #                               "Kite": {'x': [], 'y': [], 'z': []},
+    #                               "Quadcopter": {'x': [], 'y': [], 'z': []},
+    #                               "Eagle": {'x': [], 'y': [], 'z': []}},
+    #                        "VW": {"Plane": {'x': [], 'y': [], 'z': []},
+    #                              "Glider":{'x': [], 'y': [], 'z': []},
+    #                              "Kite": {'x': [], 'y': [], 'z': []},
+    #                              "Quadcopter": {'x': [], 'y': [], 'z': []},
+    #                              "Eagle": {'x': [], 'y': [], 'z': []}}
+    #                       }
+    labeledDataByClass = {"RW": {"F16": {'x': [], 'y': [], 'z': []},
+                                 "A10": {'x': [], 'y': [], 'z': []},
+                                 "B52": {'x': [], 'y': [], 'z': []},
+                                 "C5": {'x': [], 'y': [], 'z': []}},
+                          "VW": {"F16": {'x': [], 'y': [], 'z': []},
+                                 "A10": {'x': [], 'y': [], 'z': []},
+                                 "B52": {'x': [], 'y': [], 'z': []},
+                                 "C5": {'x': [], 'y': [], 'z': []}}
                           }
-
     labeledDataByType = {"RW": {'x':[], 'y':[], 'z':[]}, "VW": {'x':[], 'y':[], 'z':[]}}
     c1 = ['r', 'g', 'b', 'm', 'k']
-    label1 = [classLabels[x] for x in latentData.Class.map({"Plane": 0, "Glider": 1, "Kite": 2, "Quadcopter":3, "Eagle":4})]
+    label1 = [classLabels[x] for x in latentData.Class.map({'F16': 0,
+                                                            'A10': 1,
+                                                            'B52': 2,
+                                                            'C5': 3})]
+    #label1 = [classLabels[x] for x in latentData.Class.map({"Plane": 0, "Glider": 1, "Kite": 2, "Quadcopter":3, "Eagle":4})]
     label2 = [dataTypesLabels[x] for x in latentData.DataType.map({"RW": 0, "VW": 1})]
 
     for m in MIN_DISTANCE:
@@ -120,67 +133,56 @@ def main():
                 fig_1_name = '3d_fiveClasses_N' + str(n) + '_dist' + str(m) + '.png'
                 fig = plt.figure(figsize=(12, 10))
                 ax = fig.add_subplot(projection='3d')
-                ax.scatter(np.array(labeledDataByClass['RW']['Plane']['x']),
-                           np.array(labeledDataByClass['RW']['Plane']['y']),
-                           np.array(labeledDataByClass['RW']['Plane']['z']),
+                ax.scatter(np.array(labeledDataByClass['RW']['F16']['x']),
+                           np.array(labeledDataByClass['RW']['F16']['y']),
+                           np.array(labeledDataByClass['RW']['F16']['z']),
                            c=c1[0],
                            cmap="Dark2", s=16, label='Plane')
-                ax.scatter(np.array(labeledDataByClass['VW']['Plane']['x']),
-                           np.array(labeledDataByClass['VW']['Plane']['y']),
-                           np.array(labeledDataByClass['VW']['Plane']['z']),
+                ax.scatter(np.array(labeledDataByClass['VW']['F16']['x']),
+                           np.array(labeledDataByClass['VW']['F16']['y']),
+                           np.array(labeledDataByClass['VW']['F16']['z']),
                            c=c1[0],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Glider']['x']),
-                           np.array(labeledDataByClass['RW']['Glider']['y']),
-                           np.array(labeledDataByClass['RW']['Glider']['z']),
+                ax.scatter(np.array(labeledDataByClass['RW']['A10']['x']),
+                           np.array(labeledDataByClass['RW']['A10']['y']),
+                           np.array(labeledDataByClass['RW']['A10']['z']),
                            c=c1[1],
-                           cmap="Dark2", s=16, label='Glider')
+                           cmap="Dark2", s=16, label='A10')
 
-                ax.scatter(np.array(labeledDataByClass['VW']['Glider']['x']),
-                           np.array(labeledDataByClass['VW']['Glider']['y']),
-                           np.array(labeledDataByClass['VW']['Glider']['z']),
+                ax.scatter(np.array(labeledDataByClass['VW']['A10']['x']),
+                           np.array(labeledDataByClass['VW']['A10']['y']),
+                           np.array(labeledDataByClass['VW']['A10']['z']),
                            c=c1[1],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Kite']['x']),
-                           np.array(labeledDataByClass['RW']['Kite']['y']),
-                           np.array(labeledDataByClass['RW']['Kite']['z']),
+                ax.scatter(np.array(labeledDataByClass['RW']['B52']['x']),
+                           np.array(labeledDataByClass['RW']['B52']['y']),
+                           np.array(labeledDataByClass['RW']['B52']['z']),
                            c=c1[2],
-                           cmap="Dark2", s=16, label='Kite')
+                           cmap="Dark2", s=16, label='B52')
 
-                ax.scatter(np.array(labeledDataByClass['VW']['Kite']['x']),
-                           np.array(labeledDataByClass['VW']['Kite']['y']),
-                           np.array(labeledDataByClass['VW']['Kite']['z']),
+                ax.scatter(np.array(labeledDataByClass['VW']['B52']['x']),
+                           np.array(labeledDataByClass['VW']['B52']['y']),
+                           np.array(labeledDataByClass['VW']['B52']['z']),
                            c=c1[2],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Quadcopter']['x']),
-                           np.array(labeledDataByClass['RW']['Quadcopter']['y']),
-                           np.array(labeledDataByClass['RW']['Quadcopter']['z']),
+                ax.scatter(np.array(labeledDataByClass['RW']['C5']['x']),
+                           np.array(labeledDataByClass['RW']['C5']['y']),
+                           np.array(labeledDataByClass['RW']['C5']['z']),
                            c=c1[3],
-                           cmap="Dark2", s=16, label='Quadcopter')
+                           cmap="Dark2", s=16, label='C5')
 
-                ax.scatter(np.array(labeledDataByClass['VW']['Quadcopter']['x']),
-                           np.array(labeledDataByClass['VW']['Quadcopter']['y']),
-                           np.array(labeledDataByClass['VW']['Quadcopter']['z']),
+                ax.scatter(np.array(labeledDataByClass['VW']['C5']['x']),
+                           np.array(labeledDataByClass['VW']['C5']['y']),
+                           np.array(labeledDataByClass['VW']['C5']['z']),
                            c=c1[3],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Eagle']['x']),
-                           np.array(labeledDataByClass['RW']['Eagle']['y']),
-                           np.array(labeledDataByClass['RW']['Eagle']['z']),
-                           c=c1[4],
-                           cmap="Dark2", s=16, label='Eagle')
-
-                ax.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']),
-                           np.array(labeledDataByClass['VW']['Eagle']['y']),
-                           np.array(labeledDataByClass['VW']['Eagle']['z']),
-                           c=c1[4],
-                           cmap="Dark2", s=16)
 
                 plt.setp(ax, xticks=[], yticks=[])
-                plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+                plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
                 ax.legend(loc='lower left', fontsize=18)
                 plt.tight_layout()
                 plt.savefig(fig_1_name, dpi=100)
@@ -216,29 +218,24 @@ def main():
                 fig_1_name = 'fiveClasses_N'+str(n)+'_dist'+str(m)+'.png'
 
                 fig, ax = plt.subplots(figsize=(12, 10))
-                ax.scatter(np.array(labeledDataByClass['RW']['Plane']['x']), np.array(labeledDataByClass['RW']['Plane']['y']), c=c1[0],
-                           cmap="Dark2", s=16, label='Plane')
-                ax.scatter(np.array(labeledDataByClass['VW']['Plane']['x']), np.array(labeledDataByClass['VW']['Plane']['y']), c=c1[0],
+                ax.scatter(np.array(labeledDataByClass['RW']['F16']['x']), np.array(labeledDataByClass['RW']['Plane']['y']), c=c1[0],
+                           cmap="Dark2", s=16, label='F16')
+                ax.scatter(np.array(labeledDataByClass['VW']['F16']['x']), np.array(labeledDataByClass['VW']['Plane']['y']), c=c1[0],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Glider']['x']), np.array(labeledDataByClass['RW']['Glider']['y']), c=c1[1],
-                           cmap="Dark2", s=16, label='Glider')
-                ax.scatter(np.array(labeledDataByClass['VW']['Glider']['x']), np.array(labeledDataByClass['VW']['Glider']['y']), c=c1[1],
+                ax.scatter(np.array(labeledDataByClass['RW']['A10']['x']), np.array(labeledDataByClass['RW']['Glider']['y']), c=c1[1],
+                           cmap="Dark2", s=16, label='A10')
+                ax.scatter(np.array(labeledDataByClass['VW']['A10']['x']), np.array(labeledDataByClass['VW']['Glider']['y']), c=c1[1],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Kite']['x']), np.array(labeledDataByClass['RW']['Kite']['y']), c=c1[2],
-                           cmap="Dark2", s=16, label='Kite')
-                ax.scatter(np.array(labeledDataByClass['VW']['Kite']['x']), np.array(labeledDataByClass['VW']['Kite']['y']), c=c1[2],
+                ax.scatter(np.array(labeledDataByClass['RW']['B52']['x']), np.array(labeledDataByClass['RW']['Kite']['y']), c=c1[2],
+                           cmap="Dark2", s=16, label='B52')
+                ax.scatter(np.array(labeledDataByClass['VW']['B52']['x']), np.array(labeledDataByClass['VW']['Kite']['y']), c=c1[2],
                            cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['Quadcopter']['x']), np.array(labeledDataByClass['RW']['Quadcopter']['y']), c=c1[3],
-                           cmap="Dark2", s=16, label='Quadcopter')
-                ax.scatter(np.array(labeledDataByClass['VW']['Quadcopter']['x']), np.array(labeledDataByClass['VW']['Quadcopter']['y']), c=c1[3],
-                           cmap="Dark2", s=16)
-
-                ax.scatter(np.array(labeledDataByClass['RW']['Eagle']['x']), np.array(labeledDataByClass['RW']['Eagle']['y']), c=c1[4],
-                           cmap="Dark2", s=16, label='Eagle')
-                ax.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']), np.array(labeledDataByClass['VW']['Eagle']['y']), c=c1[4],
+                ax.scatter(np.array(labeledDataByClass['RW']['C5']['x']), np.array(labeledDataByClass['RW']['Quadcopter']['y']), c=c1[3],
+                           cmap="Dark2", s=16, label='C5')
+                ax.scatter(np.array(labeledDataByClass['VW']['C5']['x']), np.array(labeledDataByClass['VW']['Quadcopter']['y']), c=c1[3],
                            cmap="Dark2", s=16)
 
                 plt.setp(ax, xticks=[], yticks=[])
