@@ -604,3 +604,97 @@ def display_weight_stats(model):
                 "{:+9.4f}".format(w.std()),
             ])
     display_table(table)
+
+
+def plot3D(m, n):
+    fig_1_name = '3d_fiveClasses_N' + str(n) + '_dist' + str(m) + '.png'
+    fig = plt.figure(figsize=(12, 10))
+    ax = fig.add_subplot(projection='3d')
+    ax.scatter(np.array(labeledDataByClass['RW']['Plane']['x']),
+               np.array(labeledDataByClass['RW']['Plane']['y']),
+               np.array(labeledDataByClass['RW']['Plane']['z']),
+               c=c1[0],
+               cmap="Dark2", s=16, label='Plane')
+    ax.scatter(np.array(labeledDataByClass['VW']['Plane']['x']),
+               np.array(labeledDataByClass['VW']['Plane']['y']),
+               np.array(labeledDataByClass['VW']['Plane']['z']),
+               c=c1[0],
+               cmap="Dark2", s=16)
+
+    ax.scatter(np.array(labeledDataByClass['RW']['Glider']['x']),
+               np.array(labeledDataByClass['RW']['Glider']['y']),
+               np.array(labeledDataByClass['RW']['Glider']['z']),
+               c=c1[1],
+               cmap="Dark2", s=16, label='Glider')
+
+    ax.scatter(np.array(labeledDataByClass['VW']['Glider']['x']),
+               np.array(labeledDataByClass['VW']['Glider']['y']),
+               np.array(labeledDataByClass['VW']['Glider']['z']),
+               c=c1[1],
+               cmap="Dark2", s=16)
+
+    ax.scatter(np.array(labeledDataByClass['RW']['Kite']['x']),
+               np.array(labeledDataByClass['RW']['Kite']['y']),
+               np.array(labeledDataByClass['RW']['Kite']['z']),
+               c=c1[2],
+               cmap="Dark2", s=16, label='Kite')
+
+    ax.scatter(np.array(labeledDataByClass['VW']['Kite']['x']),
+               np.array(labeledDataByClass['VW']['Kite']['y']),
+               np.array(labeledDataByClass['VW']['Kite']['z']),
+               c=c1[2],
+               cmap="Dark2", s=16)
+
+    ax.scatter(np.array(labeledDataByClass['RW']['Quadcopter']['x']),
+               np.array(labeledDataByClass['RW']['Quadcopter']['y']),
+               np.array(labeledDataByClass['RW']['Quadcopter']['z']),
+               c=c1[3],
+               cmap="Dark2", s=16, label='Quadcopter')
+
+    ax.scatter(np.array(labeledDataByClass['VW']['Quadcopter']['x']),
+               np.array(labeledDataByClass['VW']['Quadcopter']['y']),
+               np.array(labeledDataByClass['VW']['Quadcopter']['z']),
+               c=c1[3],
+               cmap="Dark2", s=16)
+
+    ax.scatter(np.array(labeledDataByClass['RW']['Eagle']['x']),
+               np.array(labeledDataByClass['RW']['Eagle']['y']),
+               np.array(labeledDataByClass['RW']['Eagle']['z']),
+               c=c1[4],
+               cmap="Dark2", s=16, label='Eagle')
+
+    ax.scatter(np.array(labeledDataByClass['VW']['Eagle']['x']),
+               np.array(labeledDataByClass['VW']['Eagle']['y']),
+               np.array(labeledDataByClass['VW']['Eagle']['z']),
+               c=c1[4],
+               cmap="Dark2", s=16)
+
+    plt.setp(ax, xticks=[], yticks=[])
+    plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+    ax.legend(loc='lower left', fontsize=18)
+    plt.tight_layout()
+    plt.savefig(fig_1_name, dpi=100)
+    plt.show()
+
+    fig_2_name = '3d_RW_VW_N' + str(n) + '_dist' + str(m) + '.png'
+    fig1 = plt.figure(figsize=(12, 10))
+    ax1 = fig1.add_subplot(projection='3d')
+
+    ax1.scatter(np.array(labeledDataByType['VW']['x']),
+                np.array(labeledDataByType['VW']['y']),
+                np.array(labeledDataByType['VW']['z']),
+                c=c1[2],
+                cmap="Dark2", s=16, label='VW')
+
+    ax1.scatter(np.array(labeledDataByType['RW']['x']),
+                np.array(labeledDataByType['RW']['y']),
+                np.array(labeledDataByType['RW']['z']),
+                c=c1[0],
+                cmap="Dark2", s=16, label='RW')
+
+    plt.setp(ax1, xticks=[], yticks=[])
+    plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+    ax1.legend(loc='lower left', fontsize=18)
+    plt.tight_layout()
+    plt.savefig(fig_2_name, dpi=100)
+    plt.show()
