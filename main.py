@@ -22,13 +22,16 @@ import numpy as np
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1259dataFrame_apt4.csv' #customBCE; alpha=0.4
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1800dataFrame_apt6.csv' #customBCE; alpha=0.6
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210703T1936dataFrame_apt8.csv' #customBCE; alpha=0.8
-FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
+#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
+FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210723T1508dataFrame.csv'
 
-NUM_NEIGHBORS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+#NUM_NEIGHBORS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+NUM_NEIGHBORS = [15, 20]
 #NUM_NEIGHBORS = [40]
 
 #MIN_DISTANCE = np.linspace(0.1, 1, 10, endpoint=True)
-MIN_DISTANCE = [0.1]
+#MIN_DISTANCE = [0.1]
+MIN_DISTANCE = [0.1, 0.25, 0.5, 1]
 NUM_COMPONENTS = 3
 
 def draw_umap(data, n_neighbors=15, min_dist=1, n_components=2, metric='euclidean', title=''):
@@ -180,7 +183,7 @@ def main():
                            cmap="Dark2", s=16)
 
                 plt.setp(ax, xticks=[], yticks=[])
-                plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+                plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
                 ax.legend(loc='lower left', fontsize=18)
                 plt.tight_layout()
                 plt.savefig(fig_1_name, dpi=100)
@@ -203,7 +206,7 @@ def main():
                             cmap="Dark2", s=16, label='RW')
 
                 plt.setp(ax1, xticks=[], yticks=[])
-                plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+                plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
                 ax1.legend(loc='lower left', fontsize=18)
                 plt.tight_layout()
                 plt.savefig(fig_2_name, dpi=100)
@@ -242,7 +245,7 @@ def main():
                            cmap="Dark2", s=16)
 
                 plt.setp(ax, xticks=[], yticks=[])
-                plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+                plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
                 ax.legend(loc='lower left', fontsize=18)
                 plt.tight_layout()
                 plt.savefig(fig_1_name, dpi=100)
@@ -255,7 +258,7 @@ def main():
                 ax1.scatter(np.array(labeledDataByType['RW']['x']), np.array(labeledDataByType['RW']['y']), c=c1[0],
                            cmap="Dark2", s=16, label='RW')
                 plt.setp(ax1, xticks=[], yticks=[])
-                plt.title("Latent Dimension Z embedded into two dimensions by UMAP", fontsize=18)
+                plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
                 ax1.legend(loc='lower left', fontsize=18)
                 plt.tight_layout()
                 plt.savefig(fig_2_name, dpi=100)
