@@ -23,7 +23,9 @@ import numpy as np
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1800dataFrame_apt6.csv' #customBCE; alpha=0.6
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210703T1936dataFrame_apt8.csv' #customBCE; alpha=0.8
 #FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
-FILE_PATH = 'D:/Ashley_ML/VAE/VAE/VAE_logs/20210730T0039/results_20210730T0150/20210730T0150dataFrame.csv' #first IR
+#FILE_PATH = 'D:/Ashley_ML/VAE/VAE/VAE_logs/20210730T0039/results_20210730T0150/20210730T0150dataFrame.csv' #first IR
+#FILE_PATH = 'C:/Users/daleas/Documents/VAE/VAE_logs/20220408T0045/results_20220408T1126/20220408T1126dataFrame.csv' #first AI CITY DATA
+FILE_PATH = 'C:/Users/daleas/Documents/VAE/VAE_logs/20220408T0045/results_20220408T1536/20220408T1536dataFrame.csv'
 NUM_NEIGHBORS = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 #NUM_NEIGHBORS = [40]
 
@@ -39,18 +41,6 @@ def draw_umap(data, n_neighbors=15, min_dist=1, n_components=2, metric='euclidea
         metric=metric
     )
     u = fit.fit_transform(data);
-    #
-    # fig = plt.figure()
-    # if n_components == 1:
-    #     ax = fig.add_subplot(111)
-    #     ax.scatter(u[:,0], range(len(u)), c=data)
-    # if n_components == 2:
-    #     ax = fig.add_subplot(111)
-    #     ax.scatter(u[:,0], u[:,1], c=data)
-    # if n_components == 3:
-    #     ax = fig.add_subplot(111, projection='3d')
-    #     ax.scatter(u[:,0], u[:,1], u[:,2], c=data, s=100)
-    # plt.title(title, fontsize=18)
     return u
 
 def main():
@@ -73,7 +63,14 @@ def main():
 
     # Sort the Data Into Classes
     #classLabels = ["Plane", "Glider", "Kite", "Quadcopter", "Eagle"]
-    classLabels=['F16', 'A10', 'B52', 'C5']
+    #classLabels=['F16', 'A10', 'B52', 'C5']
+    #classLabels = ["yellow", "orange", "green", "gray", "red", "blue", "white",
+ #                  "golden", "brown", "black", "purple", "pink"]
+
+    classLabels = ["sedan", "suv", "van", "hatchback", "mpv",  "pickup", "bus",
+                   "truck", "estate", "sportscar", "RV"]
+
+
     dataTypesLabels = ["RW", "VW"]
     # labeledDataByClass = { "RW": {"Plane": {'x': [], 'y': [], 'z': []},
     #                               "Glider": {'x': [], 'y': [], 'z': []},
@@ -86,21 +83,95 @@ def main():
     #                              "Quadcopter": {'x': [], 'y': [], 'z': []},
     #                              "Eagle": {'x': [], 'y': [], 'z': []}}
     #                       }
-    labeledDataByClass = {"RW": {"F16": {'x': [], 'y': [], 'z': []},
-                                 "A10": {'x': [], 'y': [], 'z': []},
-                                 "B52": {'x': [], 'y': [], 'z': []},
-                                 "C5": {'x': [], 'y': [], 'z': []}},
-                          "VW": {"F16": {'x': [], 'y': [], 'z': []},
-                                 "A10": {'x': [], 'y': [], 'z': []},
-                                 "B52": {'x': [], 'y': [], 'z': []},
-                                 "C5": {'x': [], 'y': [], 'z': []}}
+    # labeledDataByClass = {"RW": {"F16": {'x': [], 'y': [], 'z': []},
+    #                              "A10": {'x': [], 'y': [], 'z': []},
+    #                              "B52": {'x': [], 'y': [], 'z': []},
+    #                              "C5": {'x': [], 'y': [], 'z': []}},
+    #                       "VW": {"F16": {'x': [], 'y': [], 'z': []},
+    #                              "A10": {'x': [], 'y': [], 'z': []},
+    #                              "B52": {'x': [], 'y': [], 'z': []},
+    #                              "C5": {'x': [], 'y': [], 'z': []}}
+    #                       }
+
+    labeledDataByClass = {"RW":{"yellow": {'x': [], 'y': [], 'z': []},
+                                 "orange": {'x': [], 'y': [], 'z': []},
+                                 "green": {'x': [], 'y': [], 'z': []},
+                                 "gray": {'x': [], 'y': [], 'z': []},
+                                 "red": {'x': [], 'y': [], 'z': []},
+                                 "blue": {'x': [], 'y': [], 'z': []},
+                                 "white": {'x': [], 'y': [], 'z': []},
+                                 "golden": {'x': [], 'y': [], 'z': []},
+                                 "brown": {'x': [], 'y': [], 'z': []},
+                                 "black": {'x': [], 'y': [], 'z': []},
+                                 "purple": {'x': [], 'y': [], 'z': []},
+                                 "pink": {'x': [], 'y': [], 'z': []}},
+                          "VW":{"yellow": {'x': [], 'y': [], 'z': []},
+                                 "orange": {'x': [], 'y': [], 'z': []},
+                                 "green": {'x': [], 'y': [], 'z': []},
+                                 "gray": {'x': [], 'y': [], 'z': []},
+                                 "red": {'x': [], 'y': [], 'z': []},
+                                 "blue": {'x': [], 'y': [], 'z': []},
+                                 "white": {'x': [], 'y': [], 'z': []},
+                                 "golden": {'x': [], 'y': [], 'z': []},
+                                 "brown": {'x': [], 'y': [], 'z': []},
+                                 "black": {'x': [], 'y': [], 'z': []},
+                                 "purple": {'x': [], 'y': [], 'z': []},
+                                 "pink": {'x': [], 'y': [], 'z': []}}
                           }
+
+    labeledDataByClass ={"RW": {'sedan': {'x': [], 'y': [], 'z': []},
+                               'suv': {'x': [], 'y': [], 'z': []},
+                               'van': {'x': [], 'y': [], 'z': []},
+                               'hatchback': {'x': [], 'y': [], 'z': []},
+                               'mpv': {'x': [], 'y': [], 'z': []},
+                               'pickup': {'x': [], 'y': [], 'z': []},
+                               'bus': {'x': [], 'y': [], 'z': []},
+                               'truck': {'x': [], 'y': [], 'z': []},
+                               'estate': {'x': [], 'y': [], 'z': []},
+                               'sportscar': {'x': [], 'y': [], 'z': []},
+                               'RV': {'x': [], 'y': [], 'z': []}},
+                         "VW": {'sedan': {'x': [], 'y': [], 'z': []},
+                               'suv': {'x': [], 'y': [], 'z': []},
+                               'van': {'x': [], 'y': [], 'z': []},
+                               'hatchback': {'x': [], 'y': [], 'z': []},
+                               'mpv': {'x': [], 'y': [], 'z': []},
+                               'pickup': {'x': [], 'y': [], 'z': []},
+                               'bus': {'x': [], 'y': [], 'z': []},
+                               'truck': {'x': [], 'y': [], 'z': []},
+                               'estate': {'x': [], 'y': [], 'z': []},
+                               'sportscar': {'x': [], 'y': [], 'z': []},
+                               'RV': {'x': [], 'y': [], 'z': []}}
+                         }
+
+
     labeledDataByType = {"RW": {'x':[], 'y':[], 'z':[]}, "VW": {'x':[], 'y':[], 'z':[]}}
-    c1 = ['r', 'g', 'b', 'm', 'k']
-    label1 = [classLabels[x] for x in latentData.Class.map({'F16': 0,
-                                                            'A10': 1,
-                                                            'B52': 2,
-                                                            'C5': 3})]
+
+    ## Colormap info
+    numClasses = 12
+    #c1 = ['r', 'g', 'b', 'm', 'k', 'c', 'r', 'g', 'b', 'm', 'k', 'c']
+    #c1 = ['#b5a81b', '#e67700', '#00e632', '#787878', '#c20404', '#0414c2',
+    #      '#ffffff', '#ad9421', '#663e02', '#000000', '#6017b3', '#ff17f0']
+
+    c1 = ['#ff17f0', '#e67700','#b5a81b',  '#00e632', '#c20404', '#0414c2',
+          '#ffffff', '#ad9421', '#663e02', '#000000', '#6017b3']
+
+    #c1 = np.linspace(0, 1, num=numClasses)
+    colorMap = "viridis"
+    # label1 = [classLabels[x] for x in latentData.Class.map({'F16': 0,
+    #                                                         'A10': 1,
+    #                                                         'B52': 2,
+    #                                                         'C5': 3})]
+    label1 = [classLabels[x] for x in latentData.Class.map({"sedan" : 0,
+                                                            "suv": 1,
+                                                            "van": 2,
+                                                            "hatchback":3,
+                                                            "mpv": 4,
+                                                            "pickup": 5,
+                                                            "bus": 6,
+                                                            "truck": 7,
+                                                            "estate": 8,
+                                                            "sportscar": 9,
+                                                            "RV": 10})]
     #label1 = [classLabels[x] for x in latentData.Class.map({"Plane": 0, "Glider": 1, "Kite": 2, "Quadcopter":3, "Eagle":4})]
     label2 = [dataTypesLabels[x] for x in latentData.DataType.map({"RW": 0, "VW": 1})]
 
@@ -128,58 +199,58 @@ def main():
                 if NUM_COMPONENTS == 3:
                     labeledDataByClass[label2[idx]][label1[idx]]['z'].append(embedding[idx, 2])
                     labeledDataByType[label2[idx]]['z'].append(embedding[idx, 2])
+                # class1 = labeledDataByClass['RW']['F16']
+                # class2 = labeledDataByClass['VW']['F16']
+                # class3 = labeledDataByClass['RW']['A10']
+                # class4 = labeledDataByClass['VW']['A10']
+                # class5 = labeledDataByClass['RW']['B52']
+                # class6 = labeledDataByClass['VW']['B52']
+                # class7 = labeledDataByClass['RW']['C5']
+                # class8 = labeledDataByClass['VW']['C5']
 
-            def plot3D(m, n):
-                fig_1_name = '3d_fiveClasses_N' + str(n) + '_dist' + str(m) + '.png'
+                # class1 = labeledDataByClass['VW']["yellow"]
+                # class2 = labeledDataByClass['VW']["orange"]
+                # class3 = labeledDataByClass['VW']["green"]
+                # class4 = labeledDataByClass['VW']["gray"]
+                # class5 = labeledDataByClass['VW']["red"]
+                # class6 = labeledDataByClass['VW']["blue"]
+                # class7 = labeledDataByClass['VW']["white"]
+                # class8 = labeledDataByClass['VW']["golden"]
+                # class9 = labeledDataByClass['VW']["brown"]
+                # class10 = labeledDataByClass['VW']["black"]
+                # class11 = labeledDataByClass['VW']["purple"]
+                # class12 = labeledDataByClass['VW']["pink"]
+
+                class1 = labeledDataByClass['VW']['sedan']
+                class2 = labeledDataByClass['VW']['suv']
+                class3 = labeledDataByClass['VW']['van']
+                class4 = labeledDataByClass['VW']['hatchback']
+                class5 = labeledDataByClass['VW']['mpv']
+                class6 = labeledDataByClass['VW']['pickup']
+                class7 = labeledDataByClass['VW']['bus']
+                class8 = labeledDataByClass['VW']['truck']
+                class9 = labeledDataByClass['VW']['estate']
+                class10 = labeledDataByClass['VW']['sportscar']
+                class11 = labeledDataByClass['VW']['RV']
+
+
+                data = [class1, class2, class3, class5, class6,
+                        class7, class8, class10, class11]
+
+            def plot3D(m, n, labels, data):
+                fig_1_name = '3d_'+str(numClasses)+ '_' + str(n) + '_dist' + str(m) + '.png'
                 fig = plt.figure(figsize=(12, 10))
                 ax = fig.add_subplot(projection='3d')
-                ax.scatter(np.array(labeledDataByClass['RW']['F16']['x']),
-                           np.array(labeledDataByClass['RW']['F16']['y']),
-                           np.array(labeledDataByClass['RW']['F16']['z']),
-                           c=c1[0],
-                           cmap="Dark2", s=16, label='Plane')
-                ax.scatter(np.array(labeledDataByClass['VW']['F16']['x']),
-                           np.array(labeledDataByClass['VW']['F16']['y']),
-                           np.array(labeledDataByClass['VW']['F16']['z']),
-                           c=c1[0],
-                           cmap="Dark2", s=16)
 
-                ax.scatter(np.array(labeledDataByClass['RW']['A10']['x']),
-                           np.array(labeledDataByClass['RW']['A10']['y']),
-                           np.array(labeledDataByClass['RW']['A10']['z']),
-                           c=c1[1],
-                           cmap="Dark2", s=16, label='A10')
+                #labels = ["yellow", "orange", "green", "gray", "red", "blue", "white",
+                #          "golden", "brown", "black", "purple", "pink"]
 
-                ax.scatter(np.array(labeledDataByClass['VW']['A10']['x']),
-                           np.array(labeledDataByClass['VW']['A10']['y']),
-                           np.array(labeledDataByClass['VW']['A10']['z']),
-                           c=c1[1],
-                           cmap="Dark2", s=16)
-
-                ax.scatter(np.array(labeledDataByClass['RW']['B52']['x']),
-                           np.array(labeledDataByClass['RW']['B52']['y']),
-                           np.array(labeledDataByClass['RW']['B52']['z']),
-                           c=c1[2],
-                           cmap="Dark2", s=16, label='B52')
-
-                ax.scatter(np.array(labeledDataByClass['VW']['B52']['x']),
-                           np.array(labeledDataByClass['VW']['B52']['y']),
-                           np.array(labeledDataByClass['VW']['B52']['z']),
-                           c=c1[2],
-                           cmap="Dark2", s=16)
-
-                ax.scatter(np.array(labeledDataByClass['RW']['C5']['x']),
-                           np.array(labeledDataByClass['RW']['C5']['y']),
-                           np.array(labeledDataByClass['RW']['C5']['z']),
-                           c=c1[3],
-                           cmap="Dark2", s=16, label='C5')
-
-                ax.scatter(np.array(labeledDataByClass['VW']['C5']['x']),
-                           np.array(labeledDataByClass['VW']['C5']['y']),
-                           np.array(labeledDataByClass['VW']['C5']['z']),
-                           c=c1[3],
-                           cmap="Dark2", s=16)
-
+                for i in range(data.__len__()):
+                    ax.scatter(np.array(data[i]['x']),
+                               np.array(data[i]['y']),
+                               np.array(data[i]['z']),
+                               c=c1[i], cmap=colorMap, s=16, label=labels[i], alpha=0.3
+                               )
 
                 plt.setp(ax, xticks=[], yticks=[])
                 plt.title("Latent Dimension Z embedded into three dimensions by UMAP", fontsize=18)
@@ -211,14 +282,16 @@ def main():
                 plt.savefig(fig_2_name, dpi=100)
                 plt.show()
 
-            plot3D(m, n)
+            plot3D(m, n, classLabels, data)
 
             def plot(m, n):
                 # Plot the data
                 fig_1_name = 'fiveClasses_N'+str(n)+'_dist'+str(m)+'.png'
+                
+                class1 = labeledDataByClass['RW']['F16']
 
                 fig, ax = plt.subplots(figsize=(12, 10))
-                ax.scatter(np.array(labeledDataByClass['RW']['F16']['x']), np.array(labeledDataByClass['RW']['Plane']['y']), c=c1[0],
+                ax.scatter(np.array(['x']), np.array(labeledDataByClass['RW']['Plane']['y']), c=c1[0],
                            cmap="Dark2", s=16, label='F16')
                 ax.scatter(np.array(labeledDataByClass['VW']['F16']['x']), np.array(labeledDataByClass['VW']['Plane']['y']), c=c1[0],
                            cmap="Dark2", s=16)
