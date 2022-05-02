@@ -1,0 +1,41 @@
+UMAP_SETTINGS:
+  LD_COLUMNS: ['z0', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7',
+  'z8', 'z9', 'z10', 'z11', 'z12', 'z13', 'z14', 'z15',
+  'z16', 'z17', 'z18', 'z19', 'z20', 'z21', 'z22', 'z23',
+  'z24', 'z25', 'z26', 'z27', 'z28', 'z29', 'z30', 'z31']
+  NUM_COMPONENTS: 32
+  NUM_NEIGHBORS: [45]
+  MIN_DISTANCE: [0.1]
+
+DATA:
+
+  FILE_PATH: 'C:/Users/daleas/Documents/VAE/VAE_logs/20220408T0045/results_20220408T1536/20220408T1536dataFrame.csv'
+  SUPERCLASSES: ["RW", "VW"]
+  CLASSES: ["sedan", "suv", "van", "hatchback", "mpv",  "pickup", "bus", "truck", "estate", "sportscar", "RV"]
+  CLASS_DICT: {"RW": {'sedan': {'x': [], 'y': [], 'z': []},
+                     'suv': {'x': [], 'y': [], 'z': []},
+                     'van': {'x': [], 'y': [], 'z': []},
+                     'hatchback': {'x': [], 'y': [], 'z': []},
+                     'mpv': {'x': [], 'y': [], 'z': []},
+                     'pickup': {'x': [], 'y': [], 'z': []},
+                     'bus': {'x': [], 'y': [], 'z': []},
+                     'truck': {'x': [], 'y': [], 'z': []},
+                     'estate': {'x': [], 'y': [], 'z': []},
+                     'sportscar': {'x': [], 'y': [], 'z': []},
+                     'RV': {'x': [], 'y': [], 'z': []}},
+               "VW": {'sedan': {'x': [], 'y': [], 'z': []},
+                     'suv': {'x': [], 'y': [], 'z': []},
+                     'van': {'x': [], 'y': [], 'z': []},
+                     'hatchback': {'x': [], 'y': [], 'z': []},
+                     'mpv': {'x': [], 'y': [], 'z': []},
+                     'pickup': {'x': [], 'y': [], 'z': []},
+                     'bus': {'x': [], 'y': [], 'z': []},
+                     'truck': {'x': [], 'y': [], 'z': []},
+                     'estate': {'x': [], 'y': [], 'z': []},
+                     'sportscar': {'x': [], 'y': [], 'z': []},
+                     'RV': {'x': [], 'y': [], 'z': []}}
+              }
+  CLASS_MAP: {"sedan": 0, "suv": 1, "van": 2, "hatchback":3, "mpv":4, "pickup": 5,
+              "bus": 6, "truck": 7, "estate": 8, "sportscar": 9, "RV": 10}
+  SUPERCLASS_MAP: {"RW": 0, "VW": 1}
+  SUPERCLASS_DICT: {"RW": {'x':[], 'y':[], 'z':[]}, "VW": {'x':[], 'y':[], 'z':[]}}

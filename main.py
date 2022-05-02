@@ -11,7 +11,7 @@ def main():
     # load config parameters
     #with open('config/IRdata_32D.yml') as file:
     #    config = yaml.load(file, Loader=yaml.FullLoader)
-    with open('config/circle.yml') as file:
+    with open('config/aicd_vw_32D.yml') as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     FILE_PATH = config['DATA']['FILE_PATH']
@@ -39,14 +39,19 @@ def main():
         os.mkdir(saveDir)
     os.chdir(saveDir)
 
+
+
     latentData = pd.read_csv(FILE_PATH)
+
+    uu.get_label_names(CLASS_DICT)
+
     latentData_z = latentData[LD_COLUMNS].values
-    #imgList = latentData.file_name.values
+    imgList = latentData.filename.values
     imgLabels1 = latentData.SuperClass.values
     df_imgLabels1 = pd.DataFrame(imgLabels1, columns=['SuperClass'])
     imgLabels2 = latentData.Class.values
     df_imgLabels2 = pd.DataFrame(imgLabels2, columns=['Class'])
-    #df_imgList = pd.DataFrame(imgList, columns=['Name'])
+    df_imgList = pd.DataFrame(imgList, columns=['Name'])
     labels_true_class = [SUPERCLASS_MAP[class_str] for class_str in imgLabels1]
     df_labels_true_class = pd.DataFrame(labels_true_class, columns=['GT_ID'])
 
@@ -75,13 +80,14 @@ def main():
     if NUM_COMPONENTS == 3:
         uu.plot3D(0, 0, labeledDataByClass, labeledDataByType)
     else:
-        uu.plot(0, 0, labeledDataByClass, labeledDataByType)
+        bp = 0
+        #uu.plot(0, 0, labeledDataByClass, labeledDataByType)
 
     labels, df_labels, n_clusters_, n_noise_ = \
         uu.clusterDBSCAN(latentData_z, imgLabels1)
 
-    uu.plotDBSCAN(0, 0, labels, latentData_z, n_clusters_, NUM_COMPONENTS)
-    uu.getHausdorffDist(n_clusters_, labels, latentData_z)
+    #uu.plotDBSCAN(0, 0, labels, latentData_z, n_clusters_, NUM_COMPONENTS)
+    #uu.getHausdorffDist(n_clusters_, labels, latentData_z)
 
     ### Test different UMAP Combinations
     for m in MIN_DISTANCE:
@@ -120,29 +126,29 @@ def main():
             else:
                 uu.plot(m, n, umaplabeledDataByClass, umaplabeledDataByType)
 
-            # exportData = pd.concat([df_imgList.reset_index(drop=True),
-            #                         df_imgLabels1.reset_index(drop=True),
-            #                         df_imgLabels2.reset_index(drop=True),
-            #                         df_embedding.reset_index(drop=True),
-            #                         df_labels_true_class.reset_index(drop=True),
-            #                         df_labels.reset_index(drop=True)],
-            #                        axis=1, ignore_index=True)
+            exportData = pd.concat([df_imgList.reset_index(drop=True),
+                                    df_imgLabels1.reset_index(drop=True),
+                                    df_imgLabels2.reset_index(drop=True),
+                                    df_embedding.reset_index(drop=True),
+                                    df_labels_true_class.reset_index(drop=True),
+                                    df_labels.reset_index(drop=True)],
+                                   axis=1, ignore_index=True)
 
-            # concat_colNames = [list(df_imgList.columns),
-            #                    list(df_imgLabels1.columns),
-            #                    list(df_imgLabels2.columns),
-            #                    list(df_embedding.columns),
-            #                    list(df_labels_true_class.columns),
-            #                    list(df_labels.columns)
-            #                    ]
+            concat_colNames = [list(df_imgList.columns),
+                               list(df_imgLabels1.columns),
+                               list(df_imgLabels2.columns),
+                               list(df_embedding.columns),
+                               list(df_labels_true_class.columns),
+                               list(df_labels.columns)
+                               ]
 
             flatten = lambda nested_lists: [item for sublist in nested_lists for item in sublist]
 
-            #exportData.columns = flatten(concat_colNames)
+            exportData.columns = flatten(concat_colNames)
 
             csv_file_name = 'UMAPembedding_N' + str(n) + '_dist' + str(m) + '.csv'
             export_filepath = os.path.join(saveDir, csv_file_name)
-            #exportData.to_csv(export_filepath)
+            exportData.to_csv(export_filepath)
 
             dbscanlabels, df_dbscanlabels, n_clusters_, n_noise_ = \
                 uu.clusterDBSCAN(embedding, labels_true_class)
