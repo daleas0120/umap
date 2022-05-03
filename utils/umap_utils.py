@@ -33,7 +33,7 @@ def plot3D(m, n, labeledDataByClass, labeledDataByType):
             ax.scatter(np.array(labeledDataByClass['VW'][class_name]['x']),
                        np.array(labeledDataByClass['VW'][class_name]['y']),
                        np.array(labeledDataByClass['VW'][class_name]['z']),
-                       c=c1[color_counter], cmap="Dark2", s=16, label=class_name)
+                       c=c1[color_counter], cmap="Dark2", s=16, label='_nolegend_')
         color_counter += 1
 
     #plt.setp(ax, xticks=[], yticks=[])
@@ -113,6 +113,8 @@ def assignClusters(data, epsilon, neighbors):
     return clustering.labels
 
 def clusterDBSCAN(embedding, labels_true_class):
+    db_stats = {}
+
     ## Cluster Points
     db = DBSCAN(eps=0.23, min_samples=6).fit(embedding)
     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
@@ -124,22 +126,38 @@ def clusterDBSCAN(embedding, labels_true_class):
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(dbscanlabels)) - (1 if -1 in dbscanlabels else 0)
     n_noise_ = list(dbscanlabels).count(-1)
+    homogeneity = metrics2.homogeneity_score(labels_true_class, dbscanlabels)
+    completeness = metrics2.completeness_score(labels_true_class, dbscanlabels)
+    v_measure = metrics2.v_measure_score(labels_true_class, dbscanlabels)
+    adj_rand_ind = metrics2.adjusted_rand_score(labels_true_class, dbscanlabels)
+    adj_mut_info = metrics2.adjusted_mutual_info_score(labels_true_class, dbscanlabels)
 
+    db_stats['n_clusters'] = n_clusters_
     print("Estimated number of clusters: %d" % n_clusters_)
+
+    db_stats['n_noise'] = n_noise_
     print("Estimated number of noise points: %d" % n_noise_)
-    print("Homogeneity: %0.3f" % metrics2.homogeneity_score(labels_true_class, dbscanlabels))
-    print("Completeness: %0.3f" % metrics2.completeness_score(labels_true_class, dbscanlabels))
-    print("V-measure: %0.3f" % metrics2.v_measure_score(labels_true_class, dbscanlabels))
-    print("Adjusted Rand Index: %0.3f" % metrics2.adjusted_rand_score(labels_true_class, dbscanlabels))
-    print(
-        "Adjusted Mutual Information: %0.3f"
-        % metrics2.adjusted_mutual_info_score(labels_true_class, dbscanlabels)
-    )
+
+    db_stats['homogeneity'] = homogeneity
+    print("Homogeneity: %0.3f" % homogeneity)
+
+    db_stats['completeness'] = completeness
+    print("Completeness: %0.3f" % completeness)
+
+    db_stats['V-measure'] = v_measure
+    print("V-measure: %0.3f" % v_measure)
+
+    db_stats['adj_rand_ind'] = adj_rand_ind
+    print("Adjusted Rand Index: %0.3f" % adj_rand_ind)
+
+    db_stats['adj_mut_info'] = adj_mut_info
+    print("Adjusted Mutual Information: %0.3f" % adj_mut_info)
+
     #if n_clusters_ >=1 :
     #    print("Silhouette Coefficient: %0.3f" % metrics2.silhouette_score(embedding, dbscanlabels))
     #else:
     #    print('Cannot Find Silhouette Coeff: No clusters found')
-    return dbscanlabels, df_dbscanlabels, n_clusters_, n_noise_
+    return dbscanlabels, df_dbscanlabels, n_clusters_, n_noise_, db_stats
 
 def plotDBSCAN(n, m, labels, embedding, n_clusters_, NUM_COMPONENTS):
 
@@ -191,7 +209,11 @@ def plotDBSCAN(n, m, labels, embedding, n_clusters_, NUM_COMPONENTS):
     plt.show()
 
 def getHausdorffDist(n_clusters_, labels, embedding):
+
+    hausdorff_dict = {}
+
     for idx in range(n_clusters_):
+        cluster_distances_dict = {}
         cluster1mask = labels == idx
         cluster1 = embedding[cluster1mask]
 
@@ -204,4 +226,11 @@ def getHausdorffDist(n_clusters_, labels, embedding):
             # hausdorff_point_a, hausdorff_point_b = \
             #     metrics.hausdorff_pair(cluster1, cluster2)
 
+            cluster_distances_dict[jdx] = h_dist
+
             print('Cluster ', idx, ' | Cluster ', jdx, ' | Hausdorff Distance: ', h_dist)
+
+        hausdorff_dict[idx] = cluster_distances_dict
+
+    return hausdorff_dict
+
