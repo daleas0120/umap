@@ -11,7 +11,9 @@ def main():
     # load config parameters
     #with open('config/IRdata_32D.yml') as file:
     #    config = yaml.load(file, Loader=yaml.FullLoader)
-    with open('config/aicd_vw_32D.yml') as file:
+
+    #with open('config/circle.yml') as file:
+    with open('config/RGBdata_32D.yml') as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     FILE_PATH = config['DATA']['FILE_PATH']
