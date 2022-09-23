@@ -9,6 +9,76 @@ from tqdm import tqdm, trange
 import copy
 from sklearn.neighbors import NearestNeighbors
 from kneed import KneeLocator
+from PIL import Image
+import os
+import io
+import base64
+
+def np_image_to_base64(im_matrix):
+    """
+    Worker function for the hover-image pop up in plotly
+    :param im_matrix: np.array of shape (m, n, 3)
+    """
+    im = Image.fromarray(im_matrix)
+    buffer = io.BytesIO()
+    im.save(buffer, format="jpeg")
+    encoded_image = base64.b64encode(buffer.getvalue()).decode()
+    im_url = "data:image/jpeg;base64, " + encoded_image
+    return im_url
+
+
+def load_images(img_dir, list_of_images):
+    """
+    loads images in original data file into memory as np.array
+    :param img_dir: string specifying the folder containing the images
+    :param list_of_images: list of strings containing the images to load
+    """
+    
+    img_data = []
+    
+    for img_name in tqdm(list_of_images):
+        try:
+            img = Image.open(os.path.join(img_dir, img_name))
+        except e:
+            img = np.zeros((32, 32, 3))
+        img_data.append(np.asarray(img.convert('RGB')))
+        
+    return img_data
+
+
+def see_OG_latent_space(labeledDataByClass, latentData_z, labeledDataByType, imgLabels1, label1, label2, NUM_COMPONENTS):
+    ### Cluster without running UMAP
+    """
+    :param labeledDataByClass: 
+    :param latentData_z: pd.DataFrame of just the latent space vectors
+    :param labeledDataByType:
+    :param imgLabels1:
+    :param label1:
+    :param label2:
+    :param NUM_COMPONENTS: the number of vector components in the original dataset
+    """
+    
+    for idx in range(0, label1.__len__()):
+        labeledDataByClass[label2[idx]][label1[idx]]['x'].append(latentData_z[idx, 0])
+        labeledDataByClass[label2[idx]][label1[idx]]['y'].append(latentData_z[idx, 1])
+
+        labeledDataByType[label2[idx]]['x'].append(latentData_z[idx, 0])
+        labeledDataByType[label2[idx]]['y'].append(latentData_z[idx, 1])
+
+        if NUM_COMPONENTS >= 3:
+            labeledDataByClass[label2[idx]][label1[idx]]['z'].append(latentData_z[idx, 2])
+            labeledDataByType[label2[idx]]['z'].append(latentData_z[idx, 2])
+
+    if NUM_COMPONENTS >= 3:
+        plot3D(0, 0, labeledDataByClass, labeledDataByType)
+    else:
+        plot(0, 0, labeledDataByClass, labeledDataByType)
+
+    labels, df_labels, n_clusters_, n_noise_, _ = \
+        clusterDBSCAN(latentData_z, imgLabels1, NUM_COMPONENTS)
+    
+    return labels, df_labels, n_clusters_, n_noise_, _
+
 
 def format_data(embedding, CLASS_DICT, SUPERCLASS_DICT, CLASS_MAP, SUPERCLASS_MAP, CLASSES, SUPERCLASSES, NUM_COMPONENTS):
     classLabels = copy.deepcopy(CLASSES)
@@ -16,7 +86,7 @@ def format_data(embedding, CLASS_DICT, SUPERCLASS_DICT, CLASS_MAP, SUPERCLASS_MA
     umaplabeledDataByClass = copy.deepcopy(CLASS_DICT)
     umaplabeledDataBySuperClass = copy.deepcopy(SUPERCLASS_DICT)
     label1 = [classLabels[x] for x in embedding.Class.map(CLASS_MAP)]
-    label2 = [dataTypesLabels[x] for x in embedding.SuperClass.map(SUPERCLASS_MAP)]
+    label2 = [dataTypesLabels[x] for x in embedding.DataType.map(SUPERCLASS_MAP)]
 
     df_embedding = pd.DataFrame(embedding.iloc[:, 7:])
 
@@ -40,6 +110,15 @@ def format_data(embedding, CLASS_DICT, SUPERCLASS_DICT, CLASS_MAP, SUPERCLASS_MA
 
 
 def draw_umap(data, n_neighbors=15, min_dist=1, n_components=2, metric='euclidean', title=''):
+    """
+    Generates a umap embedding
+    :param data:
+    :param n_neighbors:
+    :param min_dist:
+    :param n_components:
+    :param metric:
+    :param title:
+    """
     fit = umap.UMAP(
         n_neighbors=n_neighbors,
         min_dist=min_dist,
@@ -52,7 +131,7 @@ def draw_umap(data, n_neighbors=15, min_dist=1, n_components=2, metric='euclidea
 def plot3D(m, n, labeledDataByClass, labeledDataByType):
     c1 = ['r', 'g', 'b', 'm', 'k', 'c', 'r', 'g', 'b', 'c', 'k']
     fig_1_name = '3d_Classes_N' + str(n) + '_dist' + str(m) + '.png'
-    fig = plt.figure(figsize=(12, 10))
+    fig = plt.figure(figsize=(5, 5))
     ax = fig.add_subplot(projection='3d')
     color_counter = 0
     for class_name in labeledDataByClass['RW']:
@@ -63,7 +142,7 @@ def plot3D(m, n, labeledDataByClass, labeledDataByType):
             ax.scatter(np.array(labeledDataByClass['RW'][class_name]['x']),
                        np.array(labeledDataByClass['RW'][class_name]['y']),
                        np.array(labeledDataByClass['RW'][class_name]['z']),
-                       c=c1[color_counter], cmap="Dark2", s=16, label=class_name)
+                       c=c1[color_counter], cmap="Dark2", s=10, label=class_name)
         if labeledDataByClass['VW'][class_name]['x'].__len__() > 0:
             if legend_label == True:
                 new_label = '_nolegend'
@@ -72,34 +151,34 @@ def plot3D(m, n, labeledDataByClass, labeledDataByType):
             ax.scatter(np.array(labeledDataByClass['VW'][class_name]['x']),
                        np.array(labeledDataByClass['VW'][class_name]['y']),
                        np.array(labeledDataByClass['VW'][class_name]['z']),
-                       c=c1[color_counter], cmap="Dark2", s=16, label=new_label)
+                       c=c1[color_counter], cmap="Dark2", s=10, label=new_label)
         color_counter += 1
 
     #plt.setp(ax, xticks=[], yticks=[])
-    plt.title("UMAP 3D Embedding", fontsize=18)
-    ax.legend(loc='lower left', fontsize=18)
+    plt.title("UMAP 3D Embedding", fontsize=10)
+    ax.legend(loc='lower left', fontsize=10)
     plt.tight_layout()
     plt.savefig(fig_1_name, dpi=100)
     plt.show()
 
     fig_2_name = '3d_RW_VW_N' + str(n) + '_dist' + str(m) + '.png'
-    fig1 = plt.figure(figsize=(12, 10))
+    fig1 = plt.figure(figsize=(5, 5))
     ax1 = fig1.add_subplot(projection='3d')
 
     ax1.scatter(np.array(labeledDataByType['VW']['x']),
                 np.array(labeledDataByType['VW']['y']),
                 np.array(labeledDataByType['VW']['z']),
                 c=c1[2],
-                cmap="Dark2", s=16, label='VW')
+                cmap="Dark2", s=10, label='VW')
 
     ax1.scatter(np.array(labeledDataByType['RW']['x']),
                 np.array(labeledDataByType['RW']['y']),
                 np.array(labeledDataByType['RW']['z']),
                 c=c1[0],
-                cmap="Dark2", s=16, label='RW')
+                cmap="Dark2", s=10, label='RW')
 
-    plt.title("UMAP 3D Embedding", fontsize=18)
-    ax1.legend(loc='lower left', fontsize=18)
+    plt.title("UMAP 3D Embedding", fontsize=10)
+    ax1.legend(loc='lower left', fontsize=10)
     plt.tight_layout()
     plt.savefig(fig_2_name, dpi=100)
     plt.show()
