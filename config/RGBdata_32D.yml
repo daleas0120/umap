@@ -8,20 +8,7 @@ UMAP_SETTINGS:
   MIN_DISTANCE: [0.001]
 
 DATA:
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/20210517T1447z_LD32_dataFrame.csv'
-#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210521T1453dataFrame.csv' #100% BG, small set
-#FILE_PATH= 'C:/Users/daleas/Documents/umap/data/20210529T1502dataFrame.csv' #100% BG, KL=0; ; small set
-#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210603T1158dataFrame.csv' #0% BG; KL=0
-#FILE_PATH = 'C:/Users/daleas/Documents/umap/data/20210604T1041dataFrame.csv' # 20% BG, KL = 0; lg set
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210608T1001dataFrame.csv' # 100% BG, KL=0; lg set
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210627T1447dataFrame.csv' #custom BCE; alpha=0
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210627T1447dataFrame_a0.csv' #customBCE; alpha=0
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210628T1846dataFrame_apt2.csv' #customBCE; alpha=0.2
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1259dataFrame_apt4.csv' #customBCE; alpha=0.4
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210701T1800dataFrame_apt6.csv' #customBCE; alpha=0.6
-#FILE_PATH = 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210703T1936dataFrame_apt8.csv' #customBCE; alpha=0.8
-#FILE_PATH: 'C:/Users/daleas/PycharmProjects/UMAP/umap/data/20210709T0203dataFrame_a1.csv' #customBCE; alpha=1
-  FILE_PATH:  'D:/Ashley_ML/VAE/logs/fit/20220502T224219/results_20220503T1135/20220503T1135dataFrame.csv'
+  FILE_PATH:  'data/example_dataFrame.csv'
   CLASSES: ["Plane", "Glider", "Kite", "Quadcopter", "Eagle"]
   SUPERCLASSES: ["RW", "VW"]
   CLASS_MAP: {"Plane": 0, "Glider": 1, "Kite": 2, "Quadcopter":3, "Eagle":4}
