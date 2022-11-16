@@ -9,6 +9,7 @@ UMAP_SETTINGS:
 
 DATA:
   FILE_PATH:  'data/example_dataFrame.csv'
+  IMAGE_PATH: 'imgs/'
   CLASSES: ["Plane", "Glider", "Kite", "Quadcopter", "Eagle"]
   SUPERCLASSES: ["RW", "VW"]
   CLASS_MAP: {"Plane": 0, "Glider": 1, "Kite": 2, "Quadcopter":3, "Eagle":4}
