@@ -37,7 +37,7 @@ The package versions at this time are:
 
 `jupyterlab`
 
-4. Open the notebook `umap_analysis.ipynb` from the browser
+4. Open the notebook `umap_analysis.ipynb` from the browser.  It may ask you to build jupyter-dash the first time; build it.
 5. Run the notebook
 
 ## Project Structure
